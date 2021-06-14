@@ -9,6 +9,7 @@ public class BuildManager : MonoBehaviour
     private GameObject turretToBuild;
 
     public GameObject standardTurretPrefab;
+    public GameObject missleTurretPrefab;
 
     public void Awake()
     {
@@ -23,8 +24,9 @@ public class BuildManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        turretToBuild = standardTurretPrefab;
+    {   
+        // Selecting at the start of the game, but commented out because we added the purchase turrets method
+        //turretToBuild = standardTurretPrefab;
     }
 
     // Update is called once per frame
@@ -36,5 +38,10 @@ public class BuildManager : MonoBehaviour
     public GameObject GetTurretToBuild()
     {
         return turretToBuild;
+    }
+
+    public void SetTurretToBuild(GameObject turretBuild)
+    {
+        turretToBuild = turretBuild;
     }
 }
