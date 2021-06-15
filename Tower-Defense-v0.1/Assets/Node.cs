@@ -7,7 +7,10 @@ public class Node : MonoBehaviour
 {
     public Color hoverColor;
     public Vector3 positionOffset; // this is to bring the object above the node
-    private GameObject currentTurretOnNode;
+
+    [Header("Optional")]
+    public GameObject currentTurretOnNode;
+
     private Renderer rend;
     private Color startNodeColor;
 
@@ -29,6 +32,11 @@ public class Node : MonoBehaviour
         
     }
 
+    public Vector3 GetBuildPosition()
+    {
+        return transform.position + positionOffset;
+    }
+
     private void OnMouseEnter()
     {
         // check if hovering a UI element that it`s on the way, in our case Node
@@ -37,7 +45,7 @@ public class Node : MonoBehaviour
             return;
         }
 
-        if (CanBuildTurret(buildManager.GetTurretToBuild()))
+        if (buildManager.CanBuild)
         {
             rend.material.color = hoverColor;
         }
@@ -50,15 +58,14 @@ public class Node : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // turret to build
-        GameObject turretToBuild = buildManager.GetTurretToBuild();
+       
 
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
 
-        if (!CanBuildTurret(turretToBuild))
+        if (!buildManager.CanBuild)
         {
             return;
         }
@@ -69,7 +76,7 @@ public class Node : MonoBehaviour
             return;
         }
 
-        currentTurretOnNode = Instantiate(turretToBuild, transform.position + positionOffset, transform.rotation);
+        buildManager.BuildTurretOn(this);
     }
 
     private bool CanBuildTurret(GameObject turretToBuild)

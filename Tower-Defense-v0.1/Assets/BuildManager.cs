@@ -6,10 +6,13 @@ public class BuildManager : MonoBehaviour
 {
     public static BuildManager instanceBuildManager;
 
-    private GameObject turretToBuild;
+    private TurretBlueprint turretToBuild;
 
     public GameObject standardTurretPrefab;
     public GameObject missleTurretPrefab;
+    public bool CanBuild {
+        get { return turretToBuild != null; } 
+    }
 
     public void Awake()
     {
@@ -35,13 +38,25 @@ public class BuildManager : MonoBehaviour
         
     }
 
-    public GameObject GetTurretToBuild()
+    public void SelectTurretToBuild(TurretBlueprint turretBlueprint)
     {
-        return turretToBuild;
+        turretToBuild = turretBlueprint;
     }
 
-    public void SetTurretToBuild(GameObject turretBuild)
-    {
-        turretToBuild = turretBuild;
+    public void BuildTurretOn(Node node) {
+
+        if (PlayerStats.money < turretToBuild.costOfTurret)
+        {
+            Debug.Log("Not enough money to build this turret");
+            return;
+        }
+
+        PlayerStats.money -= turretToBuild.costOfTurret;
+
+        // turret to build
+        GameObject turret = (GameObject)Instantiate(turretToBuild.turretPrefab, node.GetBuildPosition(), Quaternion.identity); // Quaterion identity means we won`t rotate it at all, if we want rotation we simply put transform.rotation
+        node.currentTurretOnNode = turret;
+
+        Debug.Log("Turret built! Money left:" + PlayerStats.money);
     }
 }

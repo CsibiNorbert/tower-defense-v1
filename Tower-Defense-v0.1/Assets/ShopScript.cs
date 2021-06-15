@@ -5,6 +5,10 @@ using UnityEngine;
 public class ShopScript : MonoBehaviour
 {
     BuildManager buildManager;
+    //TODO: find a way to dynamically create the turets.
+
+    public TurretBlueprint standardTurret;
+    public TurretBlueprint missleLauncher;
 
     // Start is called before the first frame update
     void Start()
@@ -19,14 +23,14 @@ public class ShopScript : MonoBehaviour
     }
 
     // Called from UI element, to communicate with the build manager and currency amount
-    public void PurchaseStandardTurret()
+    public void SelectStandardTurret()
     {
         // We set what we want to build from the shop, but we store the turrets inside the build manager
-        buildManager.SetTurretToBuild(buildManager.standardTurretPrefab);
+        buildManager.SelectTurretToBuild(standardTurret);
     }
 
-    public void PurchaseMissleTurret()
+    public void SelectMissleTurret()
     {
-        buildManager.SetTurretToBuild(buildManager.missleTurretPrefab);
+        buildManager.SelectTurretToBuild(missleLauncher);
     }
 }
