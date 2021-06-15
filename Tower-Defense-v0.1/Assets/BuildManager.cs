@@ -10,8 +10,15 @@ public class BuildManager : MonoBehaviour
 
     public GameObject standardTurretPrefab;
     public GameObject missleTurretPrefab;
+
+    public GameObject buildEffect;
     public bool CanBuild {
         get { return turretToBuild != null; } 
+    }
+
+    public bool HasMoney
+    {
+        get { return PlayerStats.money >= turretToBuild.costOfTurret; }
     }
 
     public void Awake()
@@ -56,6 +63,10 @@ public class BuildManager : MonoBehaviour
         // turret to build
         GameObject turret = (GameObject)Instantiate(turretToBuild.turretPrefab, node.GetBuildPosition(), Quaternion.identity); // Quaterion identity means we won`t rotate it at all, if we want rotation we simply put transform.rotation
         node.currentTurretOnNode = turret;
+
+        // We store it into a variable so that we can get rid of it
+        GameObject buildEff = (GameObject)Instantiate(buildEffect, node.GetBuildPosition(), Quaternion.identity);
+        Destroy(buildEff, 4f);
 
         Debug.Log("Turret built! Money left:" + PlayerStats.money);
     }

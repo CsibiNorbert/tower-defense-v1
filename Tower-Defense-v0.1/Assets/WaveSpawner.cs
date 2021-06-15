@@ -26,7 +26,9 @@ public class WaveSpawner : MonoBehaviour
 
         // It will reduce countDown every second by 1
         countDown -= Time.deltaTime;
-        WaveCountdownText.text = Mathf.Round(countDown).ToString();
+        countDown = Mathf.Clamp(countDown, 0f, Mathf.Infinity);
+
+        WaveCountdownText.text = string.Format("{0:00.00}", countDown);
     }
 
     private IEnumerator SpawnWave()

@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 public class Node : MonoBehaviour
 {
     public Color hoverColor;
+    public Color notEnoughMoneyColor;
+
     public Vector3 positionOffset; // this is to bring the object above the node
 
     [Header("Optional")]
@@ -21,6 +23,7 @@ public class Node : MonoBehaviour
     void Start()
     {
         rend = GetComponent<Renderer>();
+        startNodeColor = rend.material.color;
         startNodeColor = rend.material.color;
 
         buildManager = BuildManager.instanceBuildManager;
@@ -45,9 +48,17 @@ public class Node : MonoBehaviour
             return;
         }
 
-        if (buildManager.CanBuild)
+        if (!buildManager.CanBuild)
+        {
+            return;
+        }
+
+        if (buildManager.HasMoney)
         {
             rend.material.color = hoverColor;
+        } else
+        {
+            rend.material.color = notEnoughMoneyColor;
         }
     }
 
@@ -58,8 +69,6 @@ public class Node : MonoBehaviour
 
     private void OnMouseDown()
     {
-       
-
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
@@ -77,15 +86,5 @@ public class Node : MonoBehaviour
         }
 
         buildManager.BuildTurretOn(this);
-    }
-
-    private bool CanBuildTurret(GameObject turretToBuild)
-    {
-        if (turretToBuild == null)
-        {
-            return false;
-        }
-
-        return true;
     }
 }
