@@ -8,11 +8,14 @@ public class PlayerStats : MonoBehaviour
     // This will carry on from one scene to another
     public static int money;
     public int startMoney = 350;
+    public static int playerLives;
+    public int startLives = 6;
 
     // Start is called before the first frame update
     void Start()
     {
         money = startMoney;
+        playerLives = startLives;
     }
 
     // Update is called once per frame

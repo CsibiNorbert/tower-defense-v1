@@ -6,6 +6,9 @@ using UnityEngine;
 public class enemy : MonoBehaviour
 {
     public float speed = 10f;
+    public int enemyHealth = 100;
+    public int addMoney = 30;
+    public GameObject deathEffect;
 
     private Transform target;
     // Current index point we are pursuing
@@ -31,14 +34,45 @@ public class enemy : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damageTaken)
+    {
+        enemyHealth -= damageTaken;
+
+        if (enemyHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        AddMoneyToPlayer();
+
+        GameObject dEffect = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Destroy(dEffect, 5f);
+
+        Destroy(gameObject);
+    }
+
+    private void AddMoneyToPlayer()
+    {
+        PlayerStats.money += addMoney;
+    }
+
     private void GetNextWaypoint()
     {
         if (wavePointIndex >= waypoints.waypointList.Length - 1)
         {
-            Destroy(gameObject);
+            EndPath();
             return;
         }
         wavePointIndex++;
         target = waypoints.waypointList[wavePointIndex];
+    }
+
+    private void EndPath()
+    {
+        PlayerStats.playerLives--;
+        Destroy(gameObject);
     }
 }

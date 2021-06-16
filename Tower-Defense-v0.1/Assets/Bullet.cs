@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     public float speed = 55f;
     public GameObject impactEffect;
     public float explosionRadius = 0f;
+    public int damage = 50;
 
     // Update is called once per frame
     void Update()
@@ -79,8 +80,11 @@ public class Bullet : MonoBehaviour
 
     void Damage(Transform enemy)
     {
-        // Destroy enemy
-        Destroy(enemy.gameObject);
+        enemy en = enemy.GetComponent<enemy>();
+        if (en != null)
+        {
+            en.TakeDamage(damage);
+        }
     }
 
     void OnDrawGizmosSelected()
