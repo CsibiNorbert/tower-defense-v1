@@ -7,18 +7,26 @@ public class Turret : MonoBehaviour
 {
     private Transform target;
 
-    [Header("Attributes")]
+    [Header("General")]
     public float range = 15f;
+
+    [Header("Use Bullets (default)")]
+    public GameObject bulletPrefab;
     public float turnSpeed = 10f;
     public float fireRate = 1f;
     private float fireCountdown = 0f;
+
+    [Header("Use Laser")]
+    public bool useLaser = false;
+    public LineRenderer lineRenderer;
+    public ParticleSystem laserEffectParticle;
+    public Light impactLaserLight;
 
     [Header("Unity Setup Fields")]
     public string enemyTag = "Enemy";
     public Transform partToRotate;
 
 
-    public GameObject bulletPrefab;
     // The point in which we want to spawn the bullet (Empty game Object)
     public Transform firePoint;
 
@@ -34,9 +42,62 @@ public class Turret : MonoBehaviour
     {
         if (target == null)
         {
+            if (useLaser && lineRenderer.enabled)
+            {
+                lineRenderer.enabled = false;
+                laserEffectParticle.Stop();
+                impactLaserLight.enabled = false;
+            }
+
             return;
         }
 
+        LockOnTarget();
+
+        if (useLaser)
+        {
+            UseLaserBullet();
+        } else
+        {
+            // Time to shoot now
+            if (fireCountdown <= 0f)
+            {
+                Shoot();
+                // This means if we want to shoot 2 bullets, we divide the second by that number and we will shoot 2 bullets each second.
+                fireCountdown = 1f / fireRate;
+            }
+            // Every second it will be reduced by 1
+            fireCountdown -= Time.deltaTime;
+        }
+    }
+
+    private void UseLaserBullet()
+    {
+        if (!lineRenderer.enabled)
+        {
+            lineRenderer.enabled = true;
+
+            laserEffectParticle.Play();
+            impactLaserLight.enabled = true;
+        }
+
+        // 0 is the index of the first element in the line renderer
+        lineRenderer.SetPosition(0, firePoint.position);
+        lineRenderer.SetPosition(1, target.position);
+
+        // WHEN WE WANT TO GET THE DIRECTION FROM ONE POINT TO ANOTHER
+        // A TO B, WE GO FROM POS OF B MINUS POS OF A
+        // THIS IS A POSITION THAT POINT BACKWARDS FROM TURRET ( TOWARDS TURRET )
+        Vector3 dir = firePoint.position - target.position;
+        laserEffectParticle.transform.position = target.position + dir.normalized;
+
+        // We point in this direction ( towards turret )
+        laserEffectParticle.transform.rotation = Quaternion.LookRotation(dir);
+
+    }
+
+    private void LockOnTarget()
+    {
         // Get Vector which will point into the direction of our enemy ( which is just an arrow )
         // When we want to find the direction of an object, we find the B minus our pos A
         Vector3 direction = target.position - transform.position;
@@ -44,16 +105,6 @@ public class Turret : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles; // X Y Z angles
         partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f); // we want to rotate on the y axis. We could have used the lookRotation but in this case it will rotate on all axis
-
-        // Time to shoot now
-        if (fireCountdown <= 0f)
-        {
-            Shoot();
-            // This means if we want to shoot 2 bullets, we divide the second by that number and we will shoot 2 bullets each second.
-            fireCountdown = 1f / fireRate;
-        }
-        // Every second it will be reduced by 1
-        fireCountdown -= Time.deltaTime;
     }
 
     private void Shoot()

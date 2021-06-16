@@ -9,6 +9,7 @@ public class ShopScript : MonoBehaviour
 
     public TurretBlueprint standardTurret;
     public TurretBlueprint missleLauncher;
+    public TurretBlueprint leaserBeamer;
 
     // Start is called before the first frame update
     void Start()
@@ -32,5 +33,10 @@ public class ShopScript : MonoBehaviour
     public void SelectMissleTurret()
     {
         buildManager.SelectTurretToBuild(missleLauncher);
+    }
+
+    public void SelectBeamerTurret()
+    {
+        buildManager.SelectTurretToBuild(leaserBeamer);
     }
 }
