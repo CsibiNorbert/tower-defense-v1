@@ -22,6 +22,13 @@ public class Cameracript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // When there is a gameover, we disable the camera (controlls)
+        if (GameManager.isGameEnded)
+        {
+            this.enabled = false;
+            return;
+        }
+
         // TODO, when stopping go to initial camera pos.
         if (Input.GetKeyDown(KeyCode.M))
         {

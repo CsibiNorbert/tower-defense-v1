@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private bool isGameEnded = false;
+    public static bool isGameEnded;
+    public GameObject gameOverUi;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        // at the beggining of each scene, the game is not over
+        isGameEnded = false;
     }
 
     // Update is called once per frame
@@ -30,5 +32,7 @@ public class GameManager : MonoBehaviour
     private void EndGame()
     {
         isGameEnded = true;
+        // shows the game over ui
+        gameOverUi.SetActive(true);
     }
 }

@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemy : MonoBehaviour
+[RequireComponent(typeof(enemy))]
+public class EnemyMovement : MonoBehaviour
 {
-    public float speed = 10f;
-    public int enemyHealth = 100;
-    public int addMoney = 30;
-    public GameObject deathEffect;
-
     private Transform target;
     // Current index point we are pursuing
     private int wavePointIndex = 0;
 
+    private enemy Enemy;
+    private Turret turret;
+
     // Start is called before the first frame update
     void Start()
     {
+        Enemy = GetComponent<enemy>();
+        turret = GetComponent<Turret>();
+
         // First path
         target = waypoints.waypointList[0];
     }
@@ -26,37 +27,20 @@ public class enemy : MonoBehaviour
     {
         Vector3 direction = target.position - transform.position;
         // Normalized will have same speed
-        transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
+        transform.Translate(direction.normalized * Enemy.speed * Time.deltaTime, Space.World);
 
         if (Vector3.Distance(transform.position, target.position) <= 0.3f)
         {
             GetNextWaypoint();
         }
-    }
 
-    public void TakeDamage(int damageTaken)
-    {
-        enemyHealth -= damageTaken;
-
-        if (enemyHealth <= 0)
+        // Maybe check this as I`m not sure if it is working. I`m checking when it stops shooting the laser to the enemy to reset the speed
+        // However, maybe we need another check to make sure that the point of the laser, is pointing to the current enemy and not reseting all enemies
+        if (!turret.lineRenderer.enabled)
         {
-            Die();
+            // when finished hitting with laser, we return its original speed, its reseting our speed
+            Enemy.speed = Enemy.startSpeed;
         }
-    }
-
-    private void Die()
-    {
-        AddMoneyToPlayer();
-
-        GameObject dEffect = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
-        Destroy(dEffect, 5f);
-
-        Destroy(gameObject);
-    }
-
-    private void AddMoneyToPlayer()
-    {
-        PlayerStats.money += addMoney;
     }
 
     private void GetNextWaypoint()

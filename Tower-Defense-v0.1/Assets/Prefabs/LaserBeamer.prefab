@@ -52,6 +52,8 @@ MonoBehaviour:
   turnSpeed: 15
   fireRate: 1
   useLaser: 1
+  damageOverTime: 30
+  slowPercent: 30
   lineRenderer: {fileID: 2044390401602036914}
   laserEffectParticle: {fileID: 5355013139513770014}
   impactLaserLight: {fileID: 835259356236542972}

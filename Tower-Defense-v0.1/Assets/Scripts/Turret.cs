@@ -6,6 +6,7 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     private Transform target;
+    private enemy targetEnemy;
 
     [Header("General")]
     public float range = 15f;
@@ -18,6 +19,8 @@ public class Turret : MonoBehaviour
 
     [Header("Use Laser")]
     public bool useLaser = false;
+    public int damageOverTime = 30;
+    public float slowPercent = 0.4f;
     public LineRenderer lineRenderer;
     public ParticleSystem laserEffectParticle;
     public Light impactLaserLight;
@@ -73,6 +76,13 @@ public class Turret : MonoBehaviour
 
     private void UseLaserBullet()
     {
+        // We cancel frame rates from computers with time.deltatime. its per second not per frame.
+        // This is getting when we are updating each nearest enemy in the UpdateTarget
+        targetEnemy.TakeDamage(damageOverTime * Time.deltaTime);
+
+        // TODO: enemy is pushed away from the map when is slowed
+        //targetEnemy.Slow(slowPercent);
+
         if (!lineRenderer.enabled)
         {
             lineRenderer.enabled = true;
@@ -151,6 +161,7 @@ public class Turret : MonoBehaviour
         if (nearestEnemy != null && tempShortestDistanceOfEnemy <= range)
         {
             target = nearestEnemy.transform;
+            targetEnemy = nearestEnemy.GetComponent<enemy>();
         }
         else
         {
