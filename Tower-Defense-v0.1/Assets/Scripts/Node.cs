@@ -69,19 +69,21 @@ public class Node : MonoBehaviour
 
     private void OnMouseDown()
     {
+        // We check if we currently clicking a UI element
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
 
-        if (!buildManager.CanBuild)
+        // If turret is sitting currently on this node
+        if (currentTurretOnNode != null)
         {
+            buildManager.SelectNode(this);
             return;
         }
 
-        if (currentTurretOnNode != null)
+        if (!buildManager.CanBuild)
         {
-            Debug.Log("Something in, you cannot build it");
             return;
         }
 

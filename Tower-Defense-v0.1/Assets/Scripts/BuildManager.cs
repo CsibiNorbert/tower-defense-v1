@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,8 +8,11 @@ public class BuildManager : MonoBehaviour
     public static BuildManager instanceBuildManager;
 
     private TurretBlueprint turretToBuild;
+    private Node selectedNode;
 
     public GameObject buildEffect;
+    public NodeUi nodeUi;
+
     public bool CanBuild {
         get { return turretToBuild != null; } 
     }
@@ -32,8 +36,7 @@ public class BuildManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
-        // Selecting at the start of the game, but commented out because we added the purchase turrets method
-        //turretToBuild = standardTurretPrefab;
+
     }
 
     // Update is called once per frame
@@ -45,6 +48,29 @@ public class BuildManager : MonoBehaviour
     public void SelectTurretToBuild(TurretBlueprint turretBlueprint)
     {
         turretToBuild = turretBlueprint;
+        DeselectNode();
+    }
+
+    public void SelectNode(Node node)
+    {
+        if (selectedNode == node)
+        {
+            DeselectNode();
+            return;
+        }
+
+        selectedNode = node;
+        // This is because we want either selected turret or node
+        // When we enable one, we disable the other
+        turretToBuild = null;
+
+        nodeUi.SetTargetNode(node);
+    }
+
+    public void DeselectNode()
+    {
+        selectedNode = null;
+        nodeUi.HideNodeUi();
     }
 
     public void BuildTurretOn(Node node) {

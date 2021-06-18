@@ -36,11 +36,11 @@ public class EnemyMovement : MonoBehaviour
 
         // Maybe check this as I`m not sure if it is working. I`m checking when it stops shooting the laser to the enemy to reset the speed
         // However, maybe we need another check to make sure that the point of the laser, is pointing to the current enemy and not reseting all enemies
-        if (!turret.lineRenderer.enabled)
-        {
-            // when finished hitting with laser, we return its original speed, its reseting our speed
-            Enemy.speed = Enemy.startSpeed;
-        }
+        //if (!turret.lineRenderer.enabled)
+        //{
+        //    // when finished hitting with laser, we return its original speed, its reseting our speed
+        //    Enemy.speed = Enemy.startSpeed;
+        //}
     }
 
     private void GetNextWaypoint()
