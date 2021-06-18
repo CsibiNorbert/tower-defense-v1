@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class GameOverUi : MonoBehaviour
 {
     public Text roundsText;
+    public SceneFader sceneFader;
+    public string menuSceneName = "MainMenu";
 
     private void OnEnable()
     {
@@ -28,11 +30,13 @@ public class GameOverUi : MonoBehaviour
     public void Retry()
     {
         // It will restart the current loaded scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        sceneFader.FadeTo(SceneManager.GetActiveScene().name);
     }
 
     public void Menu()
     {
+        sceneFader.FadeTo(menuSceneName);
         Debug.Log("Go to Menu");
     }
 }
