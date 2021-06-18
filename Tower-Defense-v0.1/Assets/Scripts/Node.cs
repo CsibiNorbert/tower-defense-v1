@@ -10,8 +10,12 @@ public class Node : MonoBehaviour
 
     public Vector3 positionOffset; // this is to bring the object above the node
 
-    [Header("Optional")]
+    [HideInInspector]
     public GameObject currentTurretOnNode;
+    [HideInInspector]
+    public TurretBlueprint turretBlueprint;
+    [HideInInspector]
+    public bool isUpgraded = false;
 
     private Renderer rend;
     private Color startNodeColor;
@@ -87,6 +91,52 @@ public class Node : MonoBehaviour
             return;
         }
 
-        buildManager.BuildTurretOn(this);
+        BuildTurret(buildManager.TurretToBuild);
+    }
+
+    public void UpgradeTurret()
+    {
+        if (PlayerStats.money < turretBlueprint.upgradeCost)
+        {
+            Debug.Log("Not enough money to upgrade this turret");
+            return;
+        }
+
+        PlayerStats.money -= turretBlueprint.upgradeCost;
+
+        // get rid of the old one
+        Destroy(currentTurretOnNode);
+
+        // building a new upgraded one
+        GameObject turret = (GameObject)Instantiate(turretBlueprint.upgradedPrefab, GetBuildPosition(), Quaternion.identity); // Quaterion identity means we won`t rotate it at all, if we want rotation we simply put transform.rotation
+        currentTurretOnNode = turret;
+
+        // We store it into a variable so that we can get rid of it
+        GameObject buildEff = (GameObject)Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
+        Destroy(buildEff, 4f);
+
+        isUpgraded = true;
+    }
+
+    private void BuildTurret(TurretBlueprint turretB)
+    {
+        if (PlayerStats.money < turretB.costOfTurret)
+        {
+            Debug.Log("Not enough money to build this turret");
+            return;
+        }
+
+        PlayerStats.money -= turretBlueprint.costOfTurret;
+
+        // turret to build
+        GameObject turret = (GameObject)Instantiate(turretB.turretPrefab, GetBuildPosition(), Quaternion.identity); // Quaterion identity means we won`t rotate it at all, if we want rotation we simply put transform.rotation
+        currentTurretOnNode = turret;
+        turretBlueprint = turretB;
+
+        // We store it into a variable so that we can get rid of it
+        GameObject buildEff = (GameObject)Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
+        Destroy(buildEff, 4f);
+
+        Debug.Log("Turret built!");
     }
 }
