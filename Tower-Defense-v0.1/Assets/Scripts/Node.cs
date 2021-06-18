@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -64,6 +65,18 @@ public class Node : MonoBehaviour
         {
             rend.material.color = notEnoughMoneyColor;
         }
+    }
+
+    internal void SellCurrentTurret()
+    {
+        PlayerStats.money += turretBlueprint.GetSellAmount();
+
+        // Spawn a cool effect
+        GameObject sellEff = (GameObject)Instantiate(buildManager.sellEffect, GetBuildPosition(), Quaternion.identity);
+        Destroy(sellEff, 2f);
+
+        Destroy(currentTurretOnNode);
+        turretBlueprint = null;
     }
 
     private void OnMouseExit()

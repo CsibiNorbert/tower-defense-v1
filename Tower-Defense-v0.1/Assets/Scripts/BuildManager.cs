@@ -12,6 +12,7 @@ public class BuildManager : MonoBehaviour
     private Node selectedNode;
 
     public GameObject buildEffect;
+    public GameObject sellEffect;
     public NodeUi nodeUi;
 
     public bool CanBuild {
@@ -72,5 +73,4 @@ public class BuildManager : MonoBehaviour
         selectedNode = null;
         nodeUi.HideNodeUi();
     }
-
 }

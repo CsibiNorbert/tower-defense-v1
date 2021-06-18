@@ -1133,14 +1133,16 @@ MonoBehaviour:
     turretPrefab: {fileID: 6847935212033694582, guid: 439f76aa14d93d140a44a0f50eb5b8d0,
       type: 3}
     costOfTurret: 250
-    upgradedPrefab: {fileID: 0}
-    upgradeCost: 0
+    upgradedPrefab: {fileID: 6847935212033694582, guid: 0a32900a72222574b8be6d3dccde5c02,
+      type: 3}
+    upgradeCost: 200
   leaserBeamer:
     turretPrefab: {fileID: 308927480075390857, guid: 7e282ac34ba233241be93b9dd082d4ba,
       type: 3}
     costOfTurret: 350
-    upgradedPrefab: {fileID: 0}
-    upgradeCost: 0
+    upgradedPrefab: {fileID: 308927480075390857, guid: 55dccae7514b1694ab3848507130a9bf,
+      type: 3}
+    upgradeCost: 150
 --- !u!1 &129018292
 GameObject:
   m_ObjectHideFlags: 0
@@ -7476,7 +7478,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c43d88496f386455f9190918353d344d, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 8066982150183329517, guid: df7f579d2b146c549b07ecf1a829ad1b,
         type: 3}
       propertyPath: m_Name
@@ -9379,7 +9381,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 812907819}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1459314642}
+        m_MethodName: SellTurret
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &812907819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12859,7 +12872,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c43d88496f386455f9190918353d344d, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 8066982150183329517, guid: df7f579d2b146c549b07ecf1a829ad1b,
         type: 3}
       propertyPath: m_Name
@@ -15936,6 +15949,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildEffect: {fileID: 5298317493702881228, guid: 6833300c97993d440835881788f672ed,
     type: 3}
+  sellEffect: {fileID: 5298317493702881228, guid: 0179383f231e0ac4a84ec0e2eb2182cd,
+    type: 3}
   nodeUi: {fileID: 1459314642}
 --- !u!114 &1440730098
 MonoBehaviour:
@@ -16011,6 +16026,7 @@ MonoBehaviour:
   CanvasUi: {fileID: 1184508456}
   upgrateCostText: {fileID: 46800852}
   upgradeBtn: {fileID: 1881611192}
+  sellAmountText: {fileID: 1770390517}
 --- !u!1001 &1460736500
 PrefabInstance:
   m_ObjectHideFlags: 0
