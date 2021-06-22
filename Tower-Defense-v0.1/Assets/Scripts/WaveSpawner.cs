@@ -30,6 +30,14 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
+        if (waveNumber == waves.Length)
+        {
+            gameManager.LevelWin();
+            // Disable script so that we don`t keep spawning enemies
+            // Disable script
+            this.enabled = false;
+        }
+
         if (countDown <= 0f)
         {
             StartCoroutine(SpawnWave());
@@ -62,13 +70,7 @@ public class WaveSpawner : MonoBehaviour
 
         waveNumber++;
 
-        if (waveNumber == waves.Length)
-        {
-            gameManager.LevelWin();
-            // Disable script so that we don`t keep spawning enemies
-            // Disable script
-            this.enabled = false;
-        }
+
     }
 
     private void SpawnEnemy(GameObject enemyToSpawn)

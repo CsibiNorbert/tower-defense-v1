@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class GameOverUi : MonoBehaviour
+public class CompleteLevel : MonoBehaviour
 {
     public SceneFader sceneFader;
     public string menuSceneName = "MainMenu";
+    public string nextLevel = "Level02";
+    public int nextLeveToUnloc = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -21,16 +21,16 @@ public class GameOverUi : MonoBehaviour
         
     }
 
-    public void Retry()
+    public void Continue()
     {
-        // It will restart the current loaded scene
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        sceneFader.FadeTo(SceneManager.GetActiveScene().name);
+
+        PlayerPrefs.SetInt("levelReached", nextLeveToUnloc);
+
+        sceneFader.FadeTo(nextLevel);
     }
 
     public void Menu()
     {
         sceneFader.FadeTo(menuSceneName);
-        Debug.Log("Go to Menu");
     }
 }
