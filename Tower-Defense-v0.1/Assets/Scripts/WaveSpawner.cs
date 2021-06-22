@@ -9,6 +9,7 @@ public class WaveSpawner : MonoBehaviour
 {
     // This will be used to not spawn another wave until all enemies are dead
     public static int enemiesAlive = 0;
+    public GameManager gameManager;
 
     public WaveBlueprint[] waves;
     public Transform spawnPoint;
@@ -51,6 +52,8 @@ public class WaveSpawner : MonoBehaviour
         // Get wave we want to spawn
         WaveBlueprint wave = waves[waveNumber];
 
+        enemiesAlive = wave.amountEnemiesToSpawn;
+
         for (int i = 0; i < wave.amountEnemiesToSpawn; i++)
         {
             SpawnEnemy(wave.enemy);
@@ -61,9 +64,7 @@ public class WaveSpawner : MonoBehaviour
 
         if (waveNumber == waves.Length)
         {
-            // End level.. Transition to new level, or show score scene.
-            Debug.Log("Level 1 completed");
-
+            gameManager.LevelWin();
             // Disable script so that we don`t keep spawning enemies
             // Disable script
             this.enabled = false;
@@ -73,6 +74,5 @@ public class WaveSpawner : MonoBehaviour
     private void SpawnEnemy(GameObject enemyToSpawn)
     {
         Instantiate(enemyToSpawn, spawnPoint.position, spawnPoint.rotation);
-        enemiesAlive++;
     }
 }
