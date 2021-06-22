@@ -51,6 +51,8 @@ public class enemy : MonoBehaviour
         GameObject dEffect = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
         Destroy(dEffect, 5f);
 
+        WaveSpawner.enemiesAlive--;
+
         Destroy(gameObject);
     }
 
